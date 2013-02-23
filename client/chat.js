@@ -37,7 +37,6 @@ Meteor.subscribe('rooms', function () {
 });
 
 Meteor.subscribe('allUserData', function() {
-  
 });
 
 // Always be subscribed to the messages for the selected room.
@@ -132,6 +131,17 @@ Template.rooms.selected = function () {
 
 Template.rooms.name_class = function () {
   return this.name ? '' : 'empty';
+};
+
+Template.rooms.num_messages = function() {
+  console.log(this);
+  var messages = Messages.find({ room_id: this._id });
+
+  if(messages) {
+    return messages.count();
+  } else {
+    return 0;
+  }
 };
 
 Template.rooms.editing = function () {
