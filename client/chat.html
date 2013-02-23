@@ -1,0 +1,124 @@
+  <head>
+    <meta charset="utf-8">
+    <title>Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="#">Chat</a>
+          <div class="">
+            <p class="navbar-text pull-right">
+{{loginButtons align="right"}}
+            </p>
+            {{> new_message}}
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          {{> rooms}}
+        </div><!--/span-->
+        <div class="span10">
+          <div class="row-fluid">
+{{> messages}}
+          </div><!--/row-->
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; Eli Yelluas 2013 - Mostly code jacked from Meteor Todo. Get the code at <a target="_new" href="https://github.com/iguana/meteorite">GitHub</a>.</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+  </body>
+
+<template name="rooms">
+  <div class="well sidebar-nav">
+    <ul class="nav nav-list">
+      <li class="nav-header">Rooms</li>
+    {{#each rooms}}
+      <li class="room {{selected}}">
+        {{#if editing}}
+          <div class="edit">
+            <input class="room-name-input" id="room-name-input" type="text" value="{{name}}" />
+          </div>
+        {{else}}
+          <a class="room-name {{name_class}}" href="/{{_id}}">
+            {{name}}
+          </a>
+        {{/if}}
+      </li>
+    {{/each}}
+    </ul>
+    <br>
+    <div id="createRoom">
+      <input class="span11" type="text" id="new-room" placeholder="New Room" />
+    </div>
+  </div><!--/.well -->
+</template>
+
+<template name="new_message">
+  {{#if any_room_selected}}
+    <input type="text" id="new-message" placeholder="Enter message"/>
+  {{/if}}
+</template>
+
+<template name="messages">
+  {{#if any_room_selected}}
+  <div id="items-view" class="row-fluid">
+    {{#each messages}}
+      {{> message_item}}
+    {{/each}}
+  </div>
+  {{else}}
+  <div class="hero-unit">
+    <h1>Welcome to Chat. Please select a room from the left.</h1> 
+    {{#unless currentUser}}
+    <p>{{loginButtons}} with your Facebook, Google, or Twitter account here.</p>
+    {{/unless}}
+  </div>
+  {{/if}}
+</template>
+
+<template name="message_item">
+  <div class="message {{done_class}} well well-small" id="message-{{itemId}}">
+    {{#if editing}}
+      <div class="edit">
+        <input id="message-input" type="text" value="{{text}}" />
+      </div>
+    {{else}}
+      <div class="destroy"></div>
+      <div>
+        {{#if picture}}
+        <div class="img-container">
+          <img src="{{picture}}" class="message-picture">
+        </div>
+        {{/if}}
+        <span class="message-author" data-toggle="tooltip" title="{{msgDate}}">{{author}}</span><br>
+        <span class="message-text">{{text}}</span>
+        <div class="message-date">
+          <span class="muted small pull-right">Sent: {{msgDate}}</span>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</template>
+
+<template name="tag_filter">
+  <div id="tag-filter" class="tag-room">
+    <div class="label">Show:</div>
+    {{#each tags}}
+      <div class="tag {{selected}}">
+        {{tag_text}} <span class="count">({{count}})</span>
+      </div>
+    {{/each}}
+  </div>
+</template>

@@ -1,0 +1,44 @@
+/* CSS declarations go here */
+.message .message-author {
+  font-weight:bold;
+}
+.message .message-date {
+  font-size:0.8em;
+}
+
+.message .message-picture {
+  width: 50px;
+}
+
+.message .img-container {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  float:left;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+#new-message {
+  margin-top: 10px;
+  width: 500px;
+}
+
+#createRoom {
+  margin-left: 10px;
+}
+
+.sidebar-nav {
+  padding: 9px 0;
+}
+
+@media (min-width: 980px) {
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+}
+
+a.brand {
+  margin-top:5px;
+}
