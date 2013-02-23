@@ -154,7 +154,7 @@ Template.new_message.events(okCancelEvents(
       var user = Meteor.user();
       var author = user != null ? user.profile.name : Session.get('author') ;
       var picture = null;
-      if(user.services != null) {
+      if(user != null && user.services != null) {
         if(user.services.google != null) {
           picture = user.services.google.picture;
         }
