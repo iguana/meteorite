@@ -4,7 +4,7 @@
 }
 .message .message-date {
   font-size:0.8em;
-  padding-bottom: 10px;
+  margin-top:5px;
 }
 
 .message .message-picture {
