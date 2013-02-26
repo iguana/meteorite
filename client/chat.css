@@ -7,11 +7,19 @@
   margin-top:5px;
 }
 
-.message .message-picture {
+.message-picture {
   width: 50px;
 }
 
-.message .img-container {
+li.user-item {
+  clear: left;
+}
+
+li.user-item .user-date {
+  font-size:0.9em;
+}
+
+.img-container {
   width: 40px;
   height: 40px;
   overflow: hidden;

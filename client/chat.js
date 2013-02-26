@@ -3,9 +3,25 @@
 // Define Minimongo collections to match server/publish.js.
 Rooms = new Meteor.Collection("rooms");
 Messages = new Meteor.Collection("messages");
+
+
 var generateAnon = function() {
   var rn = md5(Meteor.uuid());
   return 'anon_' + rn.substr(0,6);
+};
+
+var userPicture = function(user) {
+    var picture = null;
+    if(user != null && user.services != null) {
+      if(user.services.google != null) {
+        picture = user.services.google.picture;
+      }
+      if(user.services.facebook != null) {
+        picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=large";
+      }
+    }
+
+    return picture;
 };
 
 // ID of currently selected room
@@ -39,11 +55,15 @@ Meteor.subscribe('rooms', function () {
 Meteor.subscribe('allUserData', function() {
 });
 
+Meteor.subscribe('users', function() {
+});
+
 // Always be subscribed to the messages for the selected room.
 Meteor.autorun(function () {
   var room_id = Session.get('room_id');
   if (room_id)
     Meteor.subscribe('messages', room_id);
+  console.log(Meteor.users.find({}));
 });
 
 
@@ -57,7 +77,7 @@ var okCancelEvents = function (selector, callbacks) {
   var cancel = callbacks.cancel || function () {};
 
   var events = {};
-  events['keyup '+selector+', keydown '+selector+', focusout '+selector] =
+  events['keyup '+selector+', keydown '+selector] =
     function (evt) {
       if (evt.type === "keydown" && evt.which === 27) {
         // escape = cancel
@@ -81,10 +101,37 @@ var activateInput = function (input) {
   input.select();
 };
 
+
+////////// Users //////////
+Template.users.users = function() {
+  return Meteor.users.find({});
+};
+
+Template.users.numUsers = function() {
+  return Meteor.users.find({}).count();
+};
+
+Template.users.userDump = function() {
+  console.log(Meteor.users.find({}));
+  return Meteor.users.find({});
+};
+
+Template.user_item.picture = function() {
+  return userPicture(this);
+};
+Template.user_item.joinDate = function() {
+  var dt = new Date(this.createdAt);
+  return dt.toLocaleString();
+};
+
 ////////// Rooms //////////
 
 Template.rooms.rooms = function () {
   return Rooms.find({}, {sort: {name: 1}});
+};
+
+Template.rooms.numRooms = function () {
+  return Rooms.find({}).count();
 };
 
 Template.rooms.events({
@@ -218,7 +265,7 @@ Template.message_item.author = function() {
 
 Template.message_item.msgDate = function() {
   var dt = new Date(this.timestamp);
-  return dt;
+  return dt.toLocaleString();
 };
 
 Template.message_item.user_image = function () { 

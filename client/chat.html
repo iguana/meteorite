@@ -23,6 +23,8 @@
       <div class="row-fluid">
         <div class="span2">
           {{> rooms}}
+          <br>
+          {{> users}}
         </div><!--/span-->
         <div class="span10">
           <div class="row-fluid">
@@ -43,7 +45,7 @@
 <template name="rooms">
   <div class="well sidebar-nav">
     <ul class="nav nav-list">
-      <li class="nav-header">Rooms</li>
+      <li class="nav-header">Rooms ({{numRooms}})</li>
     {{#each rooms}}
       <li class="room {{selected}}">
         {{#if editing}}
@@ -119,4 +121,29 @@
       </div>
     {{/each}}
   </div>
+</template>
+
+<template name="users">
+  <div id="user-list">
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Users ({{numUsers}})</li>
+        {{#each users}}
+        {{> user_item}}
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</template>
+
+<template name="user_item">
+  <li class="user-item">
+    {{#if picture}}
+    <div class="img-container">
+      <img src="{{picture}}" class="message-picture">
+    </div>
+    {{/if}}
+    <span>{{profile.name}}</span><br>
+    <span class='user-date'>{{joinDate}}</span>
+  </li>
 </template>
