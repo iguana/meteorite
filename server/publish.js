@@ -20,6 +20,21 @@ Meteor.publish('messages', function (room_id) {
 });
 
 Meteor.publish("allUserData", function () {
-  return Meteor.users.find({}, {fields: {'services': 1}});
+  return Meteor.users.find({});
+  //return Meteor.users.find({}, {fields: {'services': 1}});
 });
 
+Rooms.allow({
+  insert: function(userId, doc) {
+    return true;
+  },
+  update: function(userId, docs, fields, modifier) {
+    return true;
+  }
+});
+
+Messages.allow({
+  insert: function(userId, doc) {
+    return true;
+  }
+});
